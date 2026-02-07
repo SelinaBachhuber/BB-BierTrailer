@@ -543,9 +543,17 @@ button:hover {
 /* Smartphone: eigentlich 1 Bild */
 @media (max-width: 600px) {
     .gallery img {
-        height: 150px;    
-      }
+        max-width: calc(100% - 10px); /* wichtig: 100% minus margin */
+        height: 200px;    
+        margin: 5px; /* gleichmäßiger Abstand */
+        flex-shrink: 0; /* verhindert Zusammenquetschen */
+    }
+
+    .gallery-wrapper {
+        max-width: 100%; /* volle Breite am Handy */
+    }
 }
+
 
 .nav-btn {
     background: #333;
