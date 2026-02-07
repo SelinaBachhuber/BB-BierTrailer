@@ -540,10 +540,11 @@ button:hover {
     }
 }
 
-/* Smartphone: 1 Bild */
+/* Smartphone: eigentlich 1 Bild */
 @media (max-width: 600px) {
     .gallery img {
-        height: 180px;    }
+        height: 150px;    
+      }
 }
 
 .nav-btn {
