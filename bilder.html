@@ -25,7 +25,7 @@
       <div id="myDropdown" class="dropdown-content">
         <a href="index.html">Startseite</a>
         <a href="kontakt.html">Kontakt</a>
-        <a style="background-color: gainsboro;" href="bilder.html">Gallerie</a>
+        <a style="background-color: gainsboro;" href="bilder.html">Bildergalerie</a>
         <a href="ausstattung.html">Ausstattung</a>
       </div>
     </div>
@@ -35,16 +35,34 @@
 
   <div class="bilderseite">
     <div class="video">
-      <video controls autoplay>
-        <source src="img/video1.mp4" type="video/mp4">
+      <video controls autoplay loop>
+        <source src="img/Bilderseite/video1.mp4" type="video/mp4">
         Dein Browser unterstützt kein Video-Tag.
       </video>
     </div>
-
-
-
-
   </div>
+
+   <div class="gallery-container">
+    <button class="nav-btn" id="prevBtn">&#10094;</button>
+
+    <div class="gallery-wrapper">
+        <div class="gallery" id="gallery">
+            <img src="img/Bilderseite/galerie_außen.JPEG" alt="">
+            <!--<img src="img/Bilderseite/galerie_außenlicht.jpg" alt="">-->
+            <img src="img/Bilderseite/galerie_innen2.JPEG" alt="">
+            <img src="img/Bilderseite/galerie_weihnachten.png" alt="">
+            <img src="img/Bilderseite/galerie_innen1.JPEG" alt="">
+            <img src="img/Bilderseite/galerie_innenlicht.JPG" alt="">
+            <img src="img/Bilderseite/galerie_waschbecken.JPEG" alt="">
+            <img src="img/Bilderseite/galerie_titel.png" alt="">
+            
+           
+        </div>
+    </div>
+
+    <button class="nav-btn" id="nextBtn">&#10095;</button>
+</div>
+
 
   <!--Impressum-->
   <div class="impressum">
@@ -99,6 +117,86 @@
       }
     }
     //////////////
+
+    //Bildgallerie
+ const gallery = document.getElementById("gallery");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+
+let currentIndex = 0;
+
+// Anzahl der Bilder, die wir duplizieren (mindestens so viele wie sichtbar)
+const cloneCount = 3;
+
+// Ursprüngliche Anzahl speichern
+const originalCount = gallery.children.length;
+
+// --- 1. Bilder duplizieren ---
+for (let i = 0; i < cloneCount; i++) {
+    const clone = gallery.children[i].cloneNode(true);
+    gallery.appendChild(clone);
+}
+
+// --- 2. Responsive Anzahl der sichtbaren Bilder ---
+function getImagesPerView() {
+    if (window.innerWidth <= 600) return 1;
+    if (window.innerWidth <= 900) return 2;
+    return 3;
+}
+
+// --- 3. Galerie aktualisieren ---
+function updateGallery(animate = true) {
+    const imageWidth = gallery.children[0].offsetWidth + 10;
+
+    if (animate) {
+        gallery.style.transition = "transform 0.4s ease";
+    } else {
+        gallery.style.transition = "none";
+    }
+
+    gallery.style.transform = `translateX(-${currentIndex * imageWidth}px)`;
+}
+
+// --- 4. Weiter-Button (rechts) ---
+nextBtn.addEventListener("click", () => {
+    currentIndex++;
+    updateGallery(true);
+
+    const imagesPerView = getImagesPerView();
+    const totalImages = gallery.children.length;
+
+    // Wenn wir in die duplizierten Bilder fahren
+    setTimeout(() => {
+        if (currentIndex >= originalCount) {
+            currentIndex = 0;
+            updateGallery(false); // ohne Animation zurücksetzen
+        }
+    }, 400);
+});
+
+// --- 5. Zurück-Button (links) ---
+prevBtn.addEventListener("click", () => {
+    const imagesPerView = getImagesPerView();
+
+    // Wenn wir am Anfang sind und nach links wollen
+    if (currentIndex === 0) {
+        currentIndex = originalCount;
+        updateGallery(false); // ohne Animation ans Ende springen
+    }
+
+    currentIndex--;
+    updateGallery(true);
+});
+
+// --- 6. Bei Fenstergröße neu berechnen ---
+window.addEventListener("resize", () => {
+    updateGallery(false);
+});
+
+// --- 7. Initial starten ---
+updateGallery(false);
+
+
   </script>
 
 </body>
